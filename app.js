@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
-
+const cors = require('cors');
 const { errorHandler } = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
@@ -20,6 +20,7 @@ dotenv.config();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+app.use(cors());
 app.use(express.json('12kb'));
 app.use(express.static(path.join(__dirname, 'public')));
 
