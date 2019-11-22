@@ -11,35 +11,27 @@ const ideaSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Description must have title'],
     maxlength: [2000, 'Description must be at most 2000 letters'],
-    minlength: [40, 'Description must be atleast 40 letters']
+    minlength: [10, 'Description must be atleast 40 letters']
   },
   user: {
     type: mongoose.Schema.ObjectId,
     required: [true, 'Idea must belong to user']
   },
-  proffession: String,
-  roleInGDG: String,
-  phonenumber: String,
-  role: {
-    type: String,
-    enum: {
-      values: ['user', 'admin'],
-      message: 'Role is either user or admin'
-    },
-    default: 'user'
-  },
-  numberOfApproves: {
-    type: Number,
-    default: 0
-  },
-  numberOfDeclines: {
-    type: Number,
-    default: 0
-  },
   approved: {
+    type: Boolean,
+    default: false
+  },
+  upVote: {
+    type: Number,
+    default: 0
+  },
+  downVote: {
+    type: Number,
+    default: 0
+  },
+  hasVoted: {
     type: Boolean,
     default: false
   }
 });
-
 module.exports = mongoose.model('Idea', ideaSchema);

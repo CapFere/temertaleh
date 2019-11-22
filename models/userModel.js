@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userShcema = new mongoose.Schema({
   username: {
@@ -11,19 +12,18 @@ const userShcema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'User must have password'],
-    minlength: [6, 'Password must be atleast 6 charachters']
+    minlength: [6, 'Password must be atleast 6 charachters'],
+    select: false
   },
   firstName: {
     type: String,
     required: [true, 'User must have First Name'],
-    unique: true,
     maxlength: [20, 'First Name must be at most 20 letters'],
     minlength: [4, 'First Name must be atleast 4 letters']
   },
   lastName: {
     type: String,
     required: [true, 'User must have Last Name'],
-    unique: true,
     maxlength: [20, 'Last Name must be at most 20 letters'],
     minlength: [4, 'Last Name must be atleast 4 letters']
   },
@@ -51,5 +51,21 @@ const userShcema = new mongoose.Schema({
     default: true
   }
 });
+
+//MIDDLEWARES
+userShcema.pre('save', async function(next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+
+//INSTANCE METHODS
+userShcema.methods.verifyPassword = async function(
+  canidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(canidatePassword, userPassword);
+};
 
 module.exports = mongoose.model('User', userShcema);
