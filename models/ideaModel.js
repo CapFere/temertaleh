@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Polls = require('./pollModel');
 
 const ideaSchema = new mongoose.Schema({
   title: {
@@ -15,7 +16,8 @@ const ideaSchema = new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.ObjectId,
-    required: [true, 'Idea must belong to user']
+    required: [true, 'Idea must belong to user'],
+    ref: 'User'
   },
   approved: {
     type: Boolean,
@@ -34,4 +36,5 @@ const ideaSchema = new mongoose.Schema({
     default: false
   }
 });
+
 module.exports = mongoose.model('Idea', ideaSchema);
