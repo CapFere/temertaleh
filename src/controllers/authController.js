@@ -78,10 +78,10 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 exports.profilePicture = catchAsync(async (req, res, next) => {
   const color = randomColor();
-  //const user_initials = `${req.user.firstName.charAt(0)}${req.user.lastName.charAt(0)}`;
+  const user_initials = `${req.user.firstName.charAt(0)}${req.user.lastName.charAt(0)}`;
   const option = {
     width: 150,
-    text: 'JD',
+    text: user_initials,
     color: color,
     shape: 'circle'
   };
