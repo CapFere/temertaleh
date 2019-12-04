@@ -16,7 +16,6 @@ const getToken = id => {
 const generateProfilePicture = user => {
   const color = randomColor();
   user_initials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
-  console.log(user_initials);
   const option = {
     width: 150,
     text: user_initials,
@@ -36,7 +35,6 @@ exports.profilePicture = (req, res, next) => {
   user_initials = `${req.user.firstName.charAt(0)}${req.user.lastName.charAt(
     0
   )}`;
-  console.log(user_initials);
   const option = {
     width: 150,
     text: user_initials,

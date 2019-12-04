@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
+const compression = require('compression');
+
 const { errorHandler } = require('./src/controllers/errorController');
 const AppError = require('./src/utils/appError');
 
@@ -24,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(cors());
 app.use(express.json('12kb'));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.user(compression());
 //Routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
@@ -49,6 +51,22 @@ mongoose
 
 //STARTING THE SERVER
 const port = process.env.PORT | 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server running at port ${port}`);
+});
+
+process.on('uncaughtException', err => {
+  console.error('UNCAUGHT EXCETION');
+  console.error(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+process.on('unhandledRejection', err => {
+  console.error('UNHANDLED REJECTION');
+  console.error(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
 });
