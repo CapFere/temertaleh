@@ -38,6 +38,7 @@ const userShcema = new mongoose.Schema({
   proffession: String,
   roleInGDG: String,
   phonenumber: String,
+  profileUrl:String,
   role: {
     type: String,
     enum: {
