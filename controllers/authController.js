@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+var AvatarGenerator = require('initials-avatar-generator').AvatarGenerator;
+const fs = require('fs');
+var randomColor = require('randomcolor');
 
 const User = require('./../models/userModel');
 const AppError = require('./../utils/appError');
@@ -10,7 +13,43 @@ const getToken = id => {
     expiresIn: process.env.JWT_EXPIRES_IN
   });
 };
-
+const generateProfilePicture = user => {
+  const color = randomColor();
+  user_initials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
+  console.log(user_initials);
+  const option = {
+    width: 150,
+    text: user_initials,
+    color: color,
+    shape: 'circle'
+  };
+  const filename = `profile-${Date.now()}-picture.png`;
+  const myFile = fs.createWriteStream(`public/img/${filename}`);
+  const avatarGenerator = new AvatarGenerator();
+  avatarGenerator.generate(option, function(image) {
+    image.stream('png').pipe(myFile);
+  });
+  return filename;
+};
+exports.profilePicture = (req, res, next) => {
+  const color = randomColor();
+  user_initials = `${req.user.firstName.charAt(0)}${req.user.lastName.charAt(
+    0
+  )}`;
+  console.log(user_initials);
+  const option = {
+    width: 150,
+    text: user_initials,
+    color: color,
+    shape: 'circle'
+  };
+  //const filename = `profile-${Date.now()}-picture.png`;
+  //const myFile = fs.createWriteStream(`public/img/${filename}`);
+  const avatarGenerator = new AvatarGenerator();
+  avatarGenerator.generate(option, function(image) {
+    image.stream('png').pipe(res);
+  });
+};
 exports.login = catchAsync(async (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -21,7 +60,6 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.verifyPassword(password, user.password))) {
     return next(new AppError('Invalid Username or Password', 401));
   }
-
   const token = getToken(user._id);
 
   res.status(200).json({
