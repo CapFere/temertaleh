@@ -50,7 +50,7 @@ exports.errorHandler = (err, req, res, next) => {
     } else if (err.name === 'TokenExpiredError') {
       err = new AppError('The token has expired', 401);
     }
-    sendProduction(err, res);
+    sendDevelopment(err, res);
   }
   next();
 };
