@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post('/login', login);
 router.post('/signup', signup);
-router.get('/img/profile', profilePicture);
+
 router.use(verifyUser);
 
 router
@@ -21,6 +21,6 @@ router
   .get(getCurrentUser)
   .patch(updateCurrentUser);
 
-router.get('/img/profile', verifyUser, profilePicture);
+router.get('/img/profile', profilePicture);
 
 module.exports = router;
