@@ -11,7 +11,11 @@ const authRouter = require('./routes/authRoute');
 const userRouter = require('./routes/userRoute');
 const ideaRouter = require('./routes/ideaRoute');
 const pollRouter = require('./routes/pollRoute');
+<<<<<<< HEAD
 const statRouter = require('./routes/statRoute');
+=======
+const statsRouter = require('./routes/statRoute');
+>>>>>>> 5f0c3c107b4b17fba241a730517e3b9587f68437
 
 //BASIC SETUP
 const app = express();
@@ -30,7 +34,11 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/ideas', ideaRouter);
 app.use('/api/v1/polls', pollRouter);
+<<<<<<< HEAD
 app.use('/api/v1/stats', statRouter);
+=======
+app.use('/api/v1/stats', statsRouter);
+>>>>>>> 5f0c3c107b4b17fba241a730517e3b9587f68437
 app.all('*', (req, res, next) => {
   next(new AppError(`There is no url of ${req.url}`, 404));
 });

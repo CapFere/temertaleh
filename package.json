@@ -4,7 +4,7 @@
   "description": "Voting app for GDG Addis",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "start:prod": "NODE_ENV=production nodemon app.js"
   },
   "keywords": [

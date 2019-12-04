@@ -28,8 +28,10 @@ exports.getAllIdea = catchAsync(async (req, res, next) => {
       const poll = await Poll.findOne({ user: req.user._id, idea: idea._id });
       if (poll) {
         idea.hasVoted = poll.vote;
+        idea.poll = poll._id
       } else {
         idea.hasVoted = null;
+        idea.poll = null
       }
       return idea;
     })

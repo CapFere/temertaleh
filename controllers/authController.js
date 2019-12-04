@@ -1,8 +1,15 @@
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+<<<<<<< HEAD
 var AvatarGenerator = require('initials-avatar-generator').AvatarGenerator;
 const fs = require('fs');
 var randomColor = require('randomcolor');
+=======
+const AvatarGenerator = require("initials-avatar-generator").AvatarGenerator;
+const fs = require("fs");
+const randomColor = require("randomcolor");
+const path = require("path");
+>>>>>>> 5f0c3c107b4b17fba241a730517e3b9587f68437
 
 const User = require('./../models/userModel');
 const AppError = require('./../utils/appError');
@@ -70,17 +77,28 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const user = await User.create(req.body);
-
+  let user = await User.create(req.body);
   const token = getToken(user._id);
-
   res.status(201).json({
     status: 'success',
     token,
     data: { user }
   });
 });
-
+exports.profilePicture = catchAsync(async (req,res,next)=>{
+  const color = randomColor();
+  //const user_initials = `${req.user.firstName.charAt(0)}${req.user.lastName.charAt(0)}`;
+  const option = {
+    width: 150,
+    text:"JD",
+    color: color,
+    shape: "circle"
+  };
+  var avatarGenerator = new AvatarGenerator();
+  avatarGenerator.generate(option, function (image) {
+    image.stream("png").pipe(res);
+  });
+});
 exports.verifyUser = catchAsync(async (req, res, next) => {
   let token = null;
   if (
@@ -115,3 +133,24 @@ exports.restrictUser = (...allowedRoles) => {
     next();
   });
 };
+exports.getCurrentUser = catchAsync(async (req, res, next) => {
+  let user = await User.findById(req.user._id);
+
+  if (!user) {
+    return next(new AppError('User with this ID does not exist', 404));
+  }
+  res.status(200).json({ status: 'success', data: { user } });
+});
+exports.updateCurrentUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+    new: true,
+    runValidators: true
+  });
+  if (!user) {
+    return next(new AppError('User with this ID does not exist', 404));
+  }
+  res.status(200).json({
+    status: 'success',
+    data: { user }
+  });
+});

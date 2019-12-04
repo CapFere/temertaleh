@@ -33,7 +33,11 @@ const ideaSchema = new mongoose.Schema({
   },
   hasVoted: {
     type: Boolean,
-    default: false
+    default: null
+  },
+  poll:{
+    type:mongoose.Types.ObjectId,
+    default:null
   }
 });
 
