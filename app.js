@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(cors());
 app.use(express.json('12kb'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.user(compression());
+app.use(compression());
 //Routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
@@ -41,8 +41,13 @@ app.all('*', (req, res, next) => {
 app.use(errorHandler);
 
 //DATABASE CONNECTION
+
+const db_url = process.env.DATABASE_ATLAS.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
 mongoose
-  .connect(process.env.DATABASE, {
+  .connect(db_url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
