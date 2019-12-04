@@ -4,18 +4,14 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
-const { errorHandler } = require('./controllers/errorController');
-const AppError = require('./utils/appError');
+const { errorHandler } = require('./src/controllers/errorController');
+const AppError = require('./src/utils/appError');
 
-const authRouter = require('./routes/authRoute');
-const userRouter = require('./routes/userRoute');
-const ideaRouter = require('./routes/ideaRoute');
-const pollRouter = require('./routes/pollRoute');
-<<<<<<< HEAD
-const statRouter = require('./routes/statRoute');
-=======
-const statsRouter = require('./routes/statRoute');
->>>>>>> 5f0c3c107b4b17fba241a730517e3b9587f68437
+const authRouter = require('./src/routes/authRoute');
+const userRouter = require('./src/routes/userRoute');
+const ideaRouter = require('./src/routes/ideaRoute');
+const pollRouter = require('./src/routes/pollRoute');
+const statRouter = require('./src/routes/statRoute');
 
 //BASIC SETUP
 const app = express();
@@ -34,11 +30,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/ideas', ideaRouter);
 app.use('/api/v1/polls', pollRouter);
-<<<<<<< HEAD
 app.use('/api/v1/stats', statRouter);
-=======
-app.use('/api/v1/stats', statsRouter);
->>>>>>> 5f0c3c107b4b17fba241a730517e3b9587f68437
 app.all('*', (req, res, next) => {
   next(new AppError(`There is no url of ${req.url}`, 404));
 });

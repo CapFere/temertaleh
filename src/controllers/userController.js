@@ -1,5 +1,5 @@
 const User = require('./../models/userModel');
-const { catchAsync } = require('./../controllers/errorController');
+const { catchAsync } = require('./errorController');
 
 const {
   getAll,

@@ -1,7 +1,6 @@
 const Idea = require('./../models/ideaModel');
 const User = require('./../models/userModel');
-const { catchAsync } = require('./../controllers/errorController');
-const APIFeatures = require('./../utils/apiFeatures');
+const { catchAsync } = require('./errorController');
 
 exports.dashboardStat = catchAsync(async (req, res, next) => {
   const totalUser = await User.countDocuments();
